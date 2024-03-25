@@ -64,7 +64,8 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        $transactions = Transaction::all();
+        $usersId = auth()->user()->id;
+        $transactions = Transaction::where('user_id', $usersId)->get();;
         return view('User.list_tiket', compact('transactions'));
     }
 
