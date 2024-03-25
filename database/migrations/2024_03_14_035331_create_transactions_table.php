@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('no_booking');
             $table->unsignedBigInteger('user_id');
             $table->string('customer_name');
-            $table->integer('phone_number');
+            $table->bigInteger('phone_number');
             $table->string('email');
             $table->string('passanger_name');
             $table->unsignedBigInteger('flight_id');

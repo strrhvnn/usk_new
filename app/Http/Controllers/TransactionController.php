@@ -30,7 +30,7 @@ class TransactionController extends Controller
             'no_booking' => 'required',
             'user_id' => 'required',
             'customer_name' => 'required',
-            'phone_number' => 'required|integer:20',
+            'phone_number' => 'required|numeric',
             'email' => 'required|email',
             'passanger_name' => 'required',
             'flight_id' => 'required',
@@ -58,29 +58,6 @@ class TransactionController extends Controller
 
         return $booking_number;
     }
-
-    // public function search(Request $request)
-    // {
-
-
-    //     // $transactions = Transaction::where('no_booking', 'like', "%$search$")->get();
-
-    //     // return view('Admin.laporan', compact('transactions'));
-
-    //     // // Query pencarian pada tabel transactions
-    //     // $transaction = Transaction::where('no_booking', 'like', "%$search%")->get();
-
-    //     // Query pencarian pada tabel flights
-    //     $search = $request->input('search');
-    //     $transactions = Flight::where('departure_city', 'like', "%$search%")
-    //         ->orWhere('no_flight', 'like', "%$search%")
-    //         ->get();
-
-    //     // Menggabungkan hasil pencarian dari kedua tabel
-    //     // $transactions = $transaction->merge($flights);
-
-    //     return view('Admin.laporan', compact('transactions'));
-    // }
 
     /**
      * Display the specified resource.

@@ -18,6 +18,7 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
+                                    <th>Maskapai</th>
                                     <th>No.Penerbangan</th>
                                     <th>Departure City</th>
                                     <th>Arrival City</th>
@@ -34,6 +35,7 @@
                                 @foreach ($flights as $flight)
                                     <tr>
                                         <th>{{ $loop->iteration }}</th>
+                                        <td>{{ $flight->airline->name }}</td>
                                         <td>{{ $flight->no_flight }}</td>
                                         <td>{{ $flight->departure_city }}</td>
                                         <td>{{ $flight->arrival_city }}</td>

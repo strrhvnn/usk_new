@@ -28,6 +28,8 @@ class Transaction extends Model
     {
         return [
             'no_booking' => $this->no_booking,
+            'customer_name' => $this->customer_name,
+            'passanger_name' => $this->passanger_name,
             // Tambahkan kolom lain yang ingin dicari (optional)
         ];
     }

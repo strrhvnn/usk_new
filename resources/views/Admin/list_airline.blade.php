@@ -27,7 +27,7 @@
                                         <th>{{ $loop->iteration }}</th>
                                         <td>{{ $airline->name }}</td>
                                         <td class="flex">
-                                            <a href="{{ route('Admin.edit_airline', $airline->id) }}"class="btn btn-warning mx-3">Edit Role</a>
+                                            <a href="{{ route('Admin.edit_airline', $airline->id) }}"class="btn btn-warning mx-3">Edit Airline</a>
                                             <form action="{{ route('Admin.airline.delete', ['id' => $airline->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this airline?')">
                                                 @csrf
                                                 @method('DELETE')
