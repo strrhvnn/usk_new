@@ -16,7 +16,7 @@ class AdminController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('Admin.dahsboard',compact('users'));
+        return view('Admin.dahsboard', compact('users'));
     }
 
     /**
@@ -40,30 +40,79 @@ class AdminController extends Controller
      */
     public function show(Request $request)
     {
-        if($request->keyword){
-            $transactions = Transaction::search($request->keyword)->get();
-        }else{
+
+        if ($request->keyword) {
+            $transactions = Transaction::where('no_booking', 'like', '%' . $request->keyword . '%')
+                                        ->orWhere('customer_name', 'like', '%' . $request->keyword . '%')
+                                        ->orWhere('passanger_name', 'like', '%' . $request->keyword . '%')
+                                        ->orWhereHas('flight', function ($query) use ($request) {
+                                            $query->where('no_flight', 'like', '%' . $request->keyword . '%')
+                                                  ->orWhere('departure_city', 'like', '%' . $request->keyword . '%')
+                                                  ->orWhere('departure_date', 'like', '%' . $request->keyword . '%')
+                                                  ->orWhere('arrival_date', 'like', '%' . $request->keyword . '%')
+                                                  ->orWhere('arrival_city', 'like', '%' . $request->keyword . '%');
+                                        })
+                                        ->get();
+        } else {
             $transactions = Transaction::all();
         }
-        return view('Admin.laporan',compact('transactions'));
+        return view('Admin.laporan', compact('transactions'));
+
+        // if ($request->keyword) {
+        //     $transactions = Transaction::search($request->keyword)->get();
+        // } else {
+        //     $transactions = Transaction::all();
+        // }
+        // return view('Admin.laporan', compact('transactions'));
     }
 
-    public function confirmPayment(Request $request, $id){
+    public function confirmPayment(Request $request, $id)
+    {
+        // Mengambil data transaksi
+        $transaction = Transaction::find($id);
 
-        $transactions = Transaction::find($id);
-        $transactions->payment_status = 'Success';
-        $transactions->save();
-        alert()->success('Hore!','Tiket berhasil di konfirmasi');
+        // Memeriksa apakah ada kursi tersedia
+        $flight = $transaction->flight;
+        if ($flight->seat <= 0) {
+            // Jika tidak ada kursi tersedia, memberikan pesan kesalahan
+            alert()->error('Maaf!', 'Tiket sudah habis.');
+            return redirect()->back();
+        }
+
+        // Mengupdate status pembayaran
+        $transaction->payment_status = 'Success';
+        $transaction->save();
+
+        // Mengurangi jumlah kursi yang tersedia dalam tabel penerbangan
+        $flight->seat -= 1; // Mengurangi satu kursi
+        $flight->save();
+
+        // Memberi pemberitahuan bahwa pembayaran berhasil dikonfirmasi
+        alert()->success('Hore!', 'Tiket berhasil dikonfirmasi');
+
         return redirect()->route('Admin.laporan');
     }
+
+    public function canceledPayment($id){
+        $transaction = Transaction::find($id);
+
+        $transaction->payment_status = 'Canceled';
+        $transaction->save();
+
+        alert()->success('Tiket berhasil di cancel');
+
+        return redirect()->back();
+    }
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {   $airlines = Airline::all();
+    {
+        $airlines = Airline::all();
         $users = User::find($id);
-        return view('Admin.edit_role', compact(['users','airlines']));
+        return view('Admin.edit_role', compact(['users', 'airlines']));
     }
 
     /**
@@ -71,16 +120,16 @@ class AdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->validate($request,[
-            'role'=> 'required',
-            'name'=> 'required',
-            'airline_id'=> 'nullable',
+        $this->validate($request, [
+            'role' => 'required',
+            'name' => 'required',
+            'airline_id' => 'nullable',
         ]);
 
         $users = User::find($id);
 
         $users->update($request->all());
-        alert()->success('Hore!','Airline Berhasil ditambahkan');
+        alert()->success('Hore!', 'Operasi yang anda lakukan berhasil');
         return redirect()->route('Admin.dashboard');
     }
 
@@ -92,7 +141,7 @@ class AdminController extends Controller
         $users = User::find($id);
 
         $users->delete();
-        alert()->success('Hore!','Operasi yang anda lakukan berhasil');
+        alert()->success('Hore!', 'Operasi yang anda lakukan berhasil');
         return redirect()->back();
     }
 }

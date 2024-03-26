@@ -30,6 +30,11 @@ class Transaction extends Model
             'no_booking' => $this->no_booking,
             'customer_name' => $this->customer_name,
             'passanger_name' => $this->passanger_name,
+            'no_flight' => $this->no_flight,
+            'departure_city' => $this->departure_city,
+            'departure_date' => $this->departure_date,
+            'arrival_date' => $this->arrival_date,
+            'arrival_city' => $this->arrival_city,
             // Tambahkan kolom lain yang ingin dicari (optional)
         ];
     }

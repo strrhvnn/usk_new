@@ -26,6 +26,7 @@ class Flight extends Model
     {
         return [
             'departure_city' => $this->departure_city,
+            'arrival_city' => $this->arrival_city,
             'no_flight' => $this->no_flight,
             // Tambahkan kolom lain yang ingin dicari (optional)
         ];

@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -8,6 +9,12 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <form action="" method="GET">
+                    <div class="form-control my-5">
+                        <input type="text" class="input input-bordered w-full max-w-xs my-3 mx-3" value="{{ isset($search) ? $search : '' }}" placeholder="Search..." name="keyword" id="keyword">
+                        <input type="submit" class="btn btn-success w-full max-w-xs my-3 mx-3">
+                    </div>
+                </form>
                 <div class="p-6 text-gray-900">
                     <h2 class="text-center">Daftar Konfirmasi Ticket</h2>
                     <div class="overflow-x-auto">
@@ -44,6 +51,11 @@
                                                     method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success">Konfirmasi</button>
+                                                </form>
+                                                <form action="{{ route('Admin.laporan.cancel', $transaction->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-error w-full mt-2">Cancel</button>
                                                 </form>
                                             </td>
                                         </tr>

@@ -25,8 +25,8 @@
                                     <th>Arrival Date</th>
                                     <th>Departure Time</th>
                                     <th>Arrival Time</th>
-                                    <th>Seat</th>
                                     <th>Price</th>
+                                    <th>Seat</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
