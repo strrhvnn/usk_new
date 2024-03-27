@@ -7,7 +7,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h2 class="text-center font-semibold">List Tiket Yang di pesan</h2>
@@ -26,6 +26,7 @@
                                     <th>Arrival Date</th>
                                     <th>Price</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,6 +42,25 @@
                                         <td>{{ $transaction->flight->arrival_date }}</td>
                                         <td>{{ $transaction->total_price }}</td>
                                         <td>{{ $transaction->payment_status }}</td>
+                                        <td>
+                                            <div style="display: flex ; flex-direction-row ; margin-right:2;">
+                                                <form action="{{ route('User.tiket.cancel', $transaction->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="btn btn-error w-full mr-2 ">Cancel</button>
+                                                </form>
+                                                <form
+                                                    action="{{ route('User.tiket.delete', ['id' => $transaction->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    {{-- @method('DELETE') --}}
+                                                    <button class="btn btn-error mx-3">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

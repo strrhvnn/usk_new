@@ -44,6 +44,10 @@ Route::middleware('roles:user')->group(function () {
 
     Route::get('/User.List.Tiket', [TransactionController::class, 'show'])->name('User.List.Tiket');
 
+    Route::post('/User.tiket.cancel/{id}', [UserController::class, 'canceledPayment'])->name('User.tiket.cancel');
+
+    Route::post('/User.tiket.delete/{id}', [UserController::class, 'delete'])->name('User.tiket.delete');
+
 });
 
 Route::middleware('roles:admin')->group(function () {
@@ -53,6 +57,7 @@ Route::middleware('roles:admin')->group(function () {
     Route::get('/Admin.laporan', [AdminController::class, 'show'])->name('Admin.laporan');
     Route::post('/Admin.laporan.confirm/{id}', [AdminController::class, 'confirmPayment'])->name('Admin.laporan.confirm');
     Route::post('/Admin.laporan.cancel/{id}', [AdminController::class, 'canceledPayment'])->name('Admin.laporan.cancel');
+    Route::post('/Admin.tiket.delete/{id}', [AdminController::class, 'deletePayment'])->name('Admin.tiket.delete');
 
     Route::get('/Admin.Edit_Role/{id}', [AdminController::class, 'edit'])->name('Admin.edit_role');
     Route::post('/Admin.Edit_Role/{id}', [AdminController::class, 'update'])->name('Admin.edit_role.update');

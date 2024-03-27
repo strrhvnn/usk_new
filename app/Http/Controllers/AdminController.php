@@ -43,27 +43,20 @@ class AdminController extends Controller
 
         if ($request->keyword) {
             $transactions = Transaction::where('no_booking', 'like', '%' . $request->keyword . '%')
-                                        ->orWhere('customer_name', 'like', '%' . $request->keyword . '%')
-                                        ->orWhere('passanger_name', 'like', '%' . $request->keyword . '%')
-                                        ->orWhereHas('flight', function ($query) use ($request) {
-                                            $query->where('no_flight', 'like', '%' . $request->keyword . '%')
-                                                  ->orWhere('departure_city', 'like', '%' . $request->keyword . '%')
-                                                  ->orWhere('departure_date', 'like', '%' . $request->keyword . '%')
-                                                  ->orWhere('arrival_date', 'like', '%' . $request->keyword . '%')
-                                                  ->orWhere('arrival_city', 'like', '%' . $request->keyword . '%');
-                                        })
-                                        ->get();
+                ->orWhere('customer_name', 'like', '%' . $request->keyword . '%')
+                ->orWhere('passanger_name', 'like', '%' . $request->keyword . '%')
+                    ->orWhereHas('flight', function ($query) use ($request) {
+                    $query->where('no_flight', 'like', '%' . $request->keyword . '%')
+                        ->orWhere('departure_city', 'like', '%' . $request->keyword . '%')
+                        ->orWhere('departure_date', 'like', '%' . $request->keyword . '%')
+                        ->orWhere('arrival_date', 'like', '%' . $request->keyword . '%')
+                        ->orWhere('arrival_city', 'like', '%' . $request->keyword . '%');
+                })
+                ->get();
         } else {
             $transactions = Transaction::all();
         }
         return view('Admin.laporan', compact('transactions'));
-
-        // if ($request->keyword) {
-        //     $transactions = Transaction::search($request->keyword)->get();
-        // } else {
-        //     $transactions = Transaction::all();
-        // }
-        // return view('Admin.laporan', compact('transactions'));
     }
 
     public function confirmPayment(Request $request, $id)
@@ -93,7 +86,8 @@ class AdminController extends Controller
         return redirect()->route('Admin.laporan');
     }
 
-    public function canceledPayment($id){
+    public function canceledPayment($id)
+    {
         $transaction = Transaction::find($id);
 
         $transaction->payment_status = 'Canceled';
@@ -104,6 +98,15 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    public function deletePayment(string $id)
+    {
+        $transaction = Transaction::find($id);
+
+        $transaction->delete();
+        alert()->success('Hore!', 'Operasi yang anda lakukan berhasil');
+        return redirect()->back();
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -111,7 +114,7 @@ class AdminController extends Controller
     public function edit(string $id)
     {
         $airlines = Airline::all();
-        $users = User::find($id);
+        $transactions = User::find($id);
         return view('Admin.edit_role', compact(['users', 'airlines']));
     }
 
