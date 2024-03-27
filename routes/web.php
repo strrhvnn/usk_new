@@ -44,7 +44,7 @@ Route::middleware('roles:user')->group(function () {
 
     Route::get('/User.List.Tiket', [TransactionController::class, 'show'])->name('User.List.Tiket');
 
-    Route::post('/User.tiket.cancel/{id}', [UserController::class, 'canceledPayment'])->name('User.tiket.cancel');
+    Route::post('/User.tiket.cancel/{id}', [UserController::class, 'cancelPayment'])->name('User.tiket.cancel');
 
     Route::post('/User.tiket.delete/{id}', [UserController::class, 'delete'])->name('User.tiket.delete');
 

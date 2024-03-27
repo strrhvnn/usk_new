@@ -114,7 +114,7 @@ class AdminController extends Controller
     public function edit(string $id)
     {
         $airlines = Airline::all();
-        $transactions = User::find($id);
+        $users = User::find($id);
         return view('Admin.edit_role', compact(['users', 'airlines']));
     }
 
